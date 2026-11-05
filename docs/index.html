@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="使用 Python、uv 和本地 Ollama 判讀可疑訊息的課堂作品">
+  <title>可疑訊息分類器 · Scam Signal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">SCAM SIGNAL / PYTHON × OLLAMA</p>
+      <h1>可疑訊息分類器</h1>
+      <p class="intro">貼上一段可疑簡訊或私訊，用本地語言模型找出警訊，整理成四個固定欄位，方便閱讀和後續處理。</p>
+      <nav aria-label="頁內導覽"><a href="#run">怎麼執行 ↓</a><a href="#result">看輸出 ↓</a></nav>
+    </header>
+
+    <section aria-labelledby="about">
+      <h2 id="about"><span>01</span> 做了什麼</h2>
+      <p>Python 將訊息和 JSON Schema 送給本機 Ollama 的 <code>/api/chat</code>，由 Qwen2.5 產生結構化輸出。程式檢查欄位、字串和允許值後，再印出 JSON。</p>
+      <dl>
+        <div><dt>risk</dt><dd>風險等級，分為高、待查證、低</dd></div>
+        <div><dt>category</dt><dd>可能的詐騙類型，例如投資或假客服</dd></div>
+        <div><dt>reason</dt><dd>判斷所依據的訊息線索</dd></div>
+        <div><dt>next_step</dt><dd>可以採取的查證行動</dd></div>
+      </dl>
+    </section>
+
+    <section aria-labelledby="run">
+      <h2 id="run"><span>02</span> 怎麼執行</h2>
+      <p>先安裝 <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> 和 <a href="https://ollama.com/download">Ollama</a>。開啟 Ollama 應用程式，或在另一個終端機執行 <code>ollama serve</code>。接著在專案目錄執行下列指令。</p>
+      <pre><code>ollama pull qwen2.5:1.5b
+uv sync --locked
+uv run --locked python classify.py "【銀行通知】您的銀行帳戶即將停用，請立即回傳簡訊驗證碼以解除限制。"</code></pre>
+    </section>
+
+    <section aria-labelledby="result">
+      <h2 id="result"><span>03</span> 執行結果</h2>
+      <p id="result-origin">以下是本機 Qwen2.5 1.5B 實跑後的原始 JSON。示範訊息為虛構內容。</p>
+      <blockquote>【銀行通知】您的銀行帳戶即將停用，請立即回傳簡訊驗證碼以解除限制。</blockquote>
+      <pre><code>{
+  &quot;risk&quot;: &quot;high&quot;,
+  &quot;category&quot;: &quot;銀行／金融&quot;,
+  &quot;reason&quot;: &quot;銀行停用帳戶通常需要通過簡訊驗證碼進行確認，此類通知應當謹慎處理。&quot;,
+  &quot;next_step&quot;: &quot;請勿點擊任何連結或提供敏感信息，建議聯繫官方客服了解真實情況。&quot;
+}</code></pre>
+      <p>人工檢視：模型將訊息判為高風險，但理由對銀行驗證流程的推測缺乏根據。這則訊息可直接觀察到的警訊是它要求收件人回傳簡訊驗證碼。</p>
+    </section>
+
+    <section aria-labelledby="ai">
+      <h2 id="ai"><span>04</span> AI 使用說明</h2>
+      <p>ChatGPT 協助規劃、撰寫程式、建立示範資料與整理作品頁。本地 Qwen2.5 負責分析訊息，分類結果僅供初步篩查。</p>
+      <p>預設執行無需金鑰。若日後改用雲端模型，金鑰放在本機 <code>.env</code>。GitHub Actions 只發布靜態作品頁，模型推論在使用者本機執行。</p>
+    </section>
+    <footer>SCAM SIGNAL · 課堂 LLM 實作</footer>
+  </main>
+</body>
+</html>

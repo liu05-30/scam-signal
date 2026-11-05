@@ -1,0 +1,6 @@
+[project]
+name = "scam-signal"
+version = "1.0.0"
+description = "Classify suspicious messages with local Ollama structured outputs"
+requires-python = ">=3.11"
+dependencies = []
