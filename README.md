@@ -15,7 +15,7 @@ uv run --locked python classify.py "【銀行通知】您的銀行帳戶即將�
 ```
 
 預設模型不需 API 金鑰。若要改模型，可用 `--model` 或將 `.env.example` 複製為
-`.env` 後修改 `OLLAMA_MODEL`。程式固定呼叫本機 `127.0.0.1:11434`，請勿提交 `.env`。
+`.env` 後修改 `OLLAMA\_MODEL`。程式固定呼叫本機 `127.0.0.1:11434`，請勿提交 `.env`。
 輸出格式和驗證狀態見 [作品頁原始檔](docs/index.html)。
 
 ## 發布作品頁
@@ -44,3 +44,6 @@ GitHub Actions 只部署靜態作品頁，推論在使用者本機執行。
 
 參考 [Ollama Structured Outputs](https://docs.ollama.com/capabilities/structured-outputs)
 與 [GitHub Pages 自訂工作流程](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)。
+
+\[查看 Scam Signal 作品頁](https://liu05-30.github.io/scam-signal/)
+
